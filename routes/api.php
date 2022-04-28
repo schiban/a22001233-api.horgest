@@ -20,3 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('students', 'App\Http\Controllers\StudentController@getAllStudents');
+Route::get('students/{id}', 'App\Http\Controllers\StudentController@getStudent');
+Route::post('students/', 'App\Http\Controllers\StudentController@createStudent');
+Route::put('students/{id}', 'App\Http\Controllers\StudentController@updateStudent');
+Route::delete('students/{id}', 'App\Http\Controllers\StudentController@deleteStudent');
