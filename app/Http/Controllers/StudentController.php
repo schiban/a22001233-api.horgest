@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Student;
 
 class StudentController extends Controller
@@ -24,6 +25,26 @@ class StudentController extends Controller
     }
 
     public function createStudent(Request $request) {
+
+        $rules = [
+            'student_code'  => 'required|max:20|unique:students',
+            'name'          => 'required|max:255',
+            'email'         => 'required|max:255|email:rfc|unique:students',
+            'phone'         => 'required|max:20',
+            'birth_date'    => 'required|date|date_format:Y-m-d',
+            'address'       => 'required|max:255',
+            'postal_code'   => 'required|max:8',
+            'locality'      => 'required|max:255',
+            'district'      => 'required|max:255',
+            'country'       => 'required|max:255',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
         $student = new Student;
         $student->student_code  = $request->student_code;
         $student->name          = $request->name;
@@ -39,6 +60,7 @@ class StudentController extends Controller
         $student->save();
 
         return response()->json(["message" => "Student created successfully!"], 201);
+
     }
 
     public function updateStudent(Request $request, $id) {
